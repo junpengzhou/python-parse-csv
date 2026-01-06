@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Dict, Any
 
 import pandas as pd
+from pandas import DataFrame
 
 
 class ExcelCSVProcessor:
@@ -41,6 +42,14 @@ class ExcelCSVProcessor:
         print(df.head(n_rows))
         print(f"\ntail {n_rows} row data:")
         print(df.tail(n_rows))
+
+    def read_excel(self, **read_excel_kwargs: None) -> DataFrame | dict[Any, DataFrame] | None:
+        file_path = Path(self.file_path)
+        if file_path.suffix == '.xlsx':
+            excel_df = pd.read_excel(file_path, **read_excel_kwargs)
+            self.logger.info(f"Read successfully, {len(excel_df)} row, {len(excel_df.columns)} column")
+            return excel_df
+        return None
 
     def read_excel_csv(self, **read_csv_kwargs: None) -> pd.DataFrame:
         file_path = Path(self.file_path)
